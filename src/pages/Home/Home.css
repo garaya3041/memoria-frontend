@@ -1,0 +1,18 @@
+.fluid-container{
+    background-color: #1c2833 !important;
+    min-height: 100vh;
+    padding-bottom: 20px;
+}
+
+.elements-center{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    color: white;
+}
+
+.rowFinal{
+    text-align: end;
+}

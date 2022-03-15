@@ -1,0 +1,181 @@
+::-webkit-scrollbar {
+    width: 12px;
+    background-color: #FFF;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #aaa;
+}
+.container-fluid{
+    background-color: #1c2833 !important;
+    color: white;
+}
+
+.fObj{
+    display: flex;
+    flex-direction: row;
+}
+.rowItem{
+    max-height: 25px;
+    margin-bottom: 5px;
+}
+.rowA{
+    display: flex;
+    flex-direction: row;
+    margin-left: -10px;
+}
+
+.fObj_row{
+    margin-left: 10px;
+}
+
+.b{
+    margin-left: 10px;
+}
+
+.p1{
+    margin-right: 5px;
+}
+
+.p2{
+    margin-left: 7px;
+    margin-right: 7px;
+    margin-top: -12px;
+}
+
+.center-elems{
+    padding-top:50px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    align-items: center;
+}
+
+.selectors{
+    padding-top:20px;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: center;
+}
+
+.form-view1{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.iterType{
+    margin-top: 5px;
+    width: 200px;
+}
+.input_timer{
+    margin-top: 10px;
+    width: 100px;
+}
+.red{
+    color: red;
+}
+.input_label{
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+.form-view2{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.input_steps{
+    margin-top: 10px;
+    width: 150px;
+}
+.red{
+    color: red;
+}
+.input_label_steps{
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+.iterationNode{
+    margin-left: 20px;
+    width: 200px;
+}
+
+.iterNode{
+    margin-top: 5px;
+    width: 200px;
+}
+
+.iterationVar{
+    margin-left: 20px;
+    width: 250px;
+}
+
+.iterVar{
+    margin-top: 5px;
+    width: 250px;
+}
+
+.button-container{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.tree-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.tree{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.grafico{
+    margin-top: 20px;
+}
+
+.actualNode-container{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn-tree{
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 150px;
+}
+
+.solucion{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.solv{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.rowBin{
+    margin-top: -25px;
+    display: flex;
+    flex-direction: row;
+}
+
+.selectionNode{
+    margin-top: 13px;
+}
+
+.btn-home{
+    margin: 10px;
+}

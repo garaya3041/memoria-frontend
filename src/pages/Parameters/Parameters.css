@@ -1,0 +1,77 @@
+.container-fluid{
+    background-color: #1c2833 !important;
+    min-height: 100vh;
+}
+.b_ub {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
+.input_b_container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.input_b{
+    width: 70px;
+    margin-right: 5px;
+}
+
+.rowItem{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 5px 0px;
+}
+
+.restriccion{
+    margin-right: 10px;
+}
+
+.ineq{
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 50px;
+}
+
+.fObj{
+    display: flex;
+    flex-direction: row;
+}
+
+.MaxMin{
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 75px;
+}
+
+.rowNat{
+    display: flex;
+    flex-direction: row;
+}
+
+.titulo{
+    margin-top: 1rem;
+}
+
+.btnContinuar{
+    margin-top: 1rem;
+}
+
+.input_binaria_container{
+    display: flex;
+    flex-direction: row;
+    margin: 10px 10px;
+}
+
+.name-binaria{
+    margin-top: -7px;
+    margin-left: 5px;
+}
+
+.variables-binarias-container{
+    display: flex;
+    flex-direction: row;
+}
+

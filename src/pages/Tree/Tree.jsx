@@ -745,7 +745,7 @@ const Tree = () => {
                         </div>
                         <div className='solucion'>
                             <MathJax className='solv' dynamic = {true}>
-                                {`$$Iteracion_{óptimo} = ${tree.bestIter} $$`}
+                                {`$$Iteración_{óptimo} = ${tree.bestIter} $$`}
                             </MathJax>
                             <MathJax className='solv' dynamic = {true}>
                                 {`$$Tiempo_{óptimo} = ${Number(tree.bestTime * 1000).toFixed(2)} [ms] $$`}
@@ -753,7 +753,7 @@ const Tree = () => {
                         </div>
                         <div className='solucion'>
                             <MathJax className='solv' dynamic = {true}>
-                                {`$$Iteracion_{PSE} = ${tree.firstIntegerIter} $$`}
+                                {`$$Iteración_{PSE} = ${tree.firstIntegerIter} $$`}
                             </MathJax>
                             <MathJax className='solv' dynamic = {true}>
                                 {`$$Tiempo_{PSE} = ${Number(tree.firstIntegerTime * 1000).toFixed(2)} [ms] $$`}

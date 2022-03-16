@@ -775,15 +775,15 @@ const Tree = () => {
             let value
             if(actualNode.x && actualNode.group != 'infeasible' && actualNode.x.length > 0){
                 value = Number(actualNode.z).toFixed(1)
-                if(tipo == 'max') value = Number(-actualNode.z).toFixed(1)
+                if(tipo == 'max') value = Number(-actualNode.z).toFixed(6)
                 for(let i = 0; i< actualNode.x.length;i++){
                     if(i!=actualNode.x.length-1){
                         variable = String.raw`x_{${i+1}}\\`
-                        answer = String.raw`${Number(actualNode.x[i]).toFixed(1)}\\`
+                        answer = String.raw`${Number(actualNode.x[i]).toFixed(6)}\\`
                     }
                     else {
                         variable = `x_{${i+1}}`
-                        answer = String.raw`${Number(actualNode.x[i]).toFixed(1)}`
+                        answer = String.raw`${Number(actualNode.x[i]).toFixed(6)}`
                     }
                     variables = variables + variable
                     answers = answers + answer

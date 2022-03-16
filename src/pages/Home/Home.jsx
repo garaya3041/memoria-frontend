@@ -65,7 +65,7 @@ const Home = () => {
 
     const numVar = () => {
         let variables = []
-        for(let i=1; i<11;i++){
+        for(let i=1; i<16;i++){
             variables.push(i)
         }
         return variables.map((item,i) => <option key={i} value={item}>{item}</option>)
@@ -73,7 +73,7 @@ const Home = () => {
 
     const numRes = () => {
         let restricciones = []
-        for(let i=1; i<11;i++){
+        for(let i=1; i<51;i++){
             restricciones.push(i)
         }
         return restricciones.map((item,i) => <option key={i} value={item}>{item}</option>)
@@ -88,7 +88,7 @@ const Home = () => {
                         Bienvenid@
                     </h2>
                     <div className="content">
-                        <p>Este es un solver para modelos de programación lineal entera (PLE) de hasta 10 variables y 10 restricciones excluyendo las de naturaleza.
+                        <p>Este es un solver para modelos de programación lineal entera (PLE) de hasta 15 variables y 50 restricciones excluyendo las de naturaleza. Para monitores inferiores a 1080px de ancho se recomienda no más de 10 variables.
                         La técnica que se usará para resolverlo es el método de Ramificación y Acotamiento (Branch & Bound) y tendrás la posibilidad de ver cómo se construye el árbol de solución e incluso de modificar sus parámetros de resolución mientras aún itera el solver.</p>
                         <p>Para empezar, ingresa ingresa los metadatos del modelo en el siguiente enlace:</p>
                     </div>

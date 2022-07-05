@@ -1,4 +1,5 @@
 import React, {useContext, useEffect, useState}  from 'react';
+import header from '../../components/header/header';
 import { Row, Col } from 'react-bootstrap';
 import {
     BrowserRouter as Router,
@@ -179,6 +180,7 @@ const Parameters = (props) => {
 
     return (
         <div className='container-fluid'>
+            {header()}
             <div className="b_ub">
                 <h3 className='titulo'>Función Objetivo:</h3>
                 {func_Obj()}

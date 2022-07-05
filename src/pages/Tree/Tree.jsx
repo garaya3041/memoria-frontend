@@ -1,4 +1,5 @@
 import React, {useContext, useEffect, useRef, useState}  from 'react';
+import header from '../../components/header/header';
 import { Row, Col } from 'react-bootstrap';
 import {
     BrowserRouter as Router,
@@ -59,6 +60,7 @@ const Tree = () => {
     const [C, setC] = useState([])
 
     const [changeButtons, setChangeButtons] = useState(false)
+    const [zoom, setZoom] = React.useState(false);
 
     const [iterationType, setIterationType] = useState('steps')
     const [timer, setTimer] = useState(1)
@@ -68,6 +70,7 @@ const Tree = () => {
     const [nodeType, setNodeType] = useState('random')
     const [varType, setVarType] = useState('random')
     const [selectedNode, setSelectedNode] = useState(null)
+    const [ansType, setAnsType] = useState('answer')
 
     const [tree, setTree] = useState({})
     const [best_X, setBest_X] = useState([])
@@ -126,8 +129,8 @@ const Tree = () => {
     const visJsRef = useRef(null)
     const options = {
         autoResize: true,
-        width:'600px',
-        height:'400px',
+        width:'1000px',
+        height:'500px',
         layout: {
             hierarchical:{
                 enabled: true,
@@ -668,7 +671,11 @@ const Tree = () => {
         console.log(body);
     }
 
-    const getX = () => {
+    const change_ansType = (input) => {
+        setAnsType(input.target.value)
+    }
+
+    const ans_type_HTML = () => {
         let variables = ''
         let answers = ''
         let variable, answer
@@ -696,34 +703,63 @@ const Tree = () => {
                     {`$$Error_{máximo}= ${chance}\\% $$`}
             </MathJax>
         )
-        /*if(chance>0){
-            elem =(
-                <MathJax className='solv' dynamic = {true}>
-                        {`$$Error_{máximo}= ${chance}\\% $$`}
-                </MathJax>
-            )
-        }
-        else{
-            elem =(
-                <MathJax className='solv' dynamic = {true}>
-                        {`$$Error_{máximo}= ${0}\\% $$`}
-                </MathJax>
-            )
-        }*/
-        return (
-            <div>        
-                {
-                    best_X.length > 0
-                    ?
-                    <div>
+        let ans,grade=0;
+        if(tree.maxId===2||tree.maxId===3) grade = 2
+        if(tree.maxId>3) grade = 3
+        switch (ansType) {
+            case 'tree':
+                ans = (
                         <div className='solucion'>
                             <MathJax className='solv' dynamic = {true}>
-                                {`$$Nodos_{árbol} = ${tree.maxId} $$`}
+                                {`$$Nodos = ${tree.maxId} $$`}
                             </MathJax>
                             <MathJax className='solv' dynamic = {true}>
-                                {`$$Altura_{árbol} = ${tree.height} $$`}
+                                {`$$Altura = ${tree.height} $$`}
+                            </MathJax>
+                            <MathJax className='solv' dynamic = {true}>
+                                {`$$Profundidad = ${tree.height} $$`}
+                            </MathJax>
+                            <MathJax className='solv' dynamic = {true}>
+                                {`$$Grado = ${grade} $$`}
                             </MathJax>
                         </div>
+                )
+                break;
+
+            case 'iteration':
+                ans = (
+                        <div className='solucion'>
+                            <MathJax className='solv' dynamic = {true}>
+                                {`$$Total = ${tree.totalIterations} $$`}
+                            </MathJax>
+                            <MathJax className='solv' dynamic = {true}>
+                                {`$$Óptimo = ${tree.bestIter} $$`}
+                            </MathJax>
+                            <MathJax className='solv' dynamic = {true}>
+                                {`$$PSE = ${tree.firstIntegerIter} $$`}
+                            </MathJax>
+                        </div>
+                )
+                break;
+            
+            case 'time':
+                ans = (
+                        <div className='solucion'>
+                            <MathJax className='solv' dynamic = {true}>
+                                {`$$Total = ${Number(tree.totalRunTime * 1000).toFixed(2)} [ms] $$`}
+                            </MathJax>
+                            <MathJax className='solv' dynamic = {true}>
+                                {`$$Óptimo = ${Number(tree.bestTime * 1000).toFixed(2)} [ms] $$`}
+                            </MathJax>
+                            <MathJax className='solv' dynamic = {true}>
+                                {`$$PSE = ${Number(tree.firstIntegerTime * 1000).toFixed(2)} [ms] $$`}
+                            </MathJax>
+                        </div>
+                )
+                break;
+
+            case 'answer':
+                ans = (
                         <div className='solucion'>
                             <MathJax className='solv' dynamic = {true}>
                                 {`$$X_{óptimo} = \\begin{bmatrix}${variables}\\end{bmatrix} = \\begin{bmatrix}${answers}\\end{bmatrix} $$`}
@@ -732,35 +768,53 @@ const Tree = () => {
                                 {`$$Z_{óptimo} = ${z_opt} $$`}
                             </MathJax>
                         </div>
+                )
+                break;
+
+            case 'error':
+                ans = (
                         <div className='solucion'>
                             {elem}
                         </div>
-                        <div className='solucion'>
-                            <MathJax className='solv' dynamic = {true}>
-                                {`$$Total_{Iteraciones} = ${tree.totalIterations} $$`}
-                            </MathJax>
-                            <MathJax className='solv' dynamic = {true}>
-                                {`$$Total_{Tiempo} = ${Number(tree.totalRunTime * 1000).toFixed(2)} [ms] $$`}
-                            </MathJax>
+                )
+                break;
+        
+            default:
+                ans = (<div className='solucion'></div>)
+                break;
+        }
+        return ans
+    }
+
+    const getX = () => {
+        return (
+            <div>        
+                {
+                    best_X.length > 0
+                    ?
+                    <div>
+
+                        <div className="answerVar">
+                            <div>
+                                Selección de métricas:
+                            </div>
+                            <select 
+                                className='ansVar'
+                                value={ansType}
+                                onChange={(e) => change_ansType(e)}
+                            >
+                                <option value={'answer'}>{'del resultado'}</option>
+                                <option value={'tree'}>{'del árbol'}</option>
+                                <option value={'iteration'}>{'de pasos'}</option>
+                                <option value={'time'}>{'de tiempo'}</option>
+                                <option value={'error'}>{'de error máximo'}</option>
+                            </select>
                         </div>
-                        <div className='solucion'>
-                            <MathJax className='solv' dynamic = {true}>
-                                {`$$Iteración_{óptimo} = ${tree.bestIter} $$`}
-                            </MathJax>
-                            <MathJax className='solv' dynamic = {true}>
-                                {`$$Tiempo_{óptimo} = ${Number(tree.bestTime * 1000).toFixed(2)} [ms] $$`}
-                            </MathJax>
-                        </div>
-                        <div className='solucion'>
-                            <MathJax className='solv' dynamic = {true}>
-                                {`$$Iteración_{PSE} = ${tree.firstIntegerIter} $$`}
-                            </MathJax>
-                            <MathJax className='solv' dynamic = {true}>
-                                {`$$Tiempo_{PSE} = ${Number(tree.firstIntegerTime * 1000).toFixed(2)} [ms] $$`}
-                            </MathJax>
-                        </div>
+                        {
+                            ans_type_HTML()
+                        }
                     </div>
-                    : 
+                    :
                     <div></div>
                 }
             </div>
@@ -887,8 +941,13 @@ const Tree = () => {
         },150)
     }
 
+    const openZoom = () => {
+        setZoom(!zoom);
+    }
+
     return (
         <div className='container-fluid'>
+            {header()}
             <Row>
                     <Col md={1} >
                         <Link to={ { pathname: `/` } }>
@@ -899,14 +958,30 @@ const Tree = () => {
                     </Col>
                 </Row>
             <div className='center-elems'>
-                <MathJaxContext 
-                    version={2}
-                    config={config}
-                    onStartup={(mathJax) => (mathJax.Hub.processSectionDelay = 0)}
-                >
-                    {showFObj()}
-                    {showConst()}
-                </MathJaxContext>
+                {
+                    zoom 
+                    ?
+                    <div>
+                        <Button className='primary btnContinuar btn-modelo' onClick={()=>{setZoom(!zoom)}}>
+                            Ocultar Modelo
+                        </Button>
+                        <MathJaxContext 
+                            version={2}
+                            config={config}
+                            onStartup={(mathJax) => (mathJax.Hub.processSectionDelay = 0)}
+                        >
+                            {showFObj()}
+                            {showConst()}
+                        </MathJaxContext>
+                    </div>
+                    :
+                    <div>
+                        <Button className='primary btnContinuar btn-modelo' onClick={()=>{setZoom(!zoom)}}>
+                            Mostrar Modelo
+                        </Button>
+                    </div>
+                }
+                
             </div>
             <div className="selectors">
                 <div className="iterationType">
@@ -1033,12 +1108,11 @@ const Tree = () => {
                 }
             </div>
             <Row>
-                <Col md={1} >
-                </Col>
-                <Col md={4}>
+                <Col md={1}></Col>
+                <Col md={6}>
                     <div className='tree' ref={visJsRef} />
                 </Col>
-                <Col md={2}>
+                <Col md={4}>
                     <div className='actualNode-container'>
                         <div>Info selección:</div>
                         {
@@ -1068,12 +1142,18 @@ const Tree = () => {
                         }
                     </div>
                 </Col>
-                <Col md={4}>
+                <Col md={1}></Col>
+            </Row>
+            <Row>
+                <Col md={1}></Col>
+                <Col md={6}>
                     <Line
                         className='grafico'
                         data={data}
                         options={data.options}
                     />
+                </Col>
+                <Col md={4}>
                     <MathJaxContext 
                         version={2}
                         config={config}
@@ -1082,8 +1162,7 @@ const Tree = () => {
                         { best_X.length>0 ? getX() : ''}
                     </MathJaxContext>
                 </Col>
-                <Col md={1} >
-                </Col>
+                <Col md={1}></Col>
             </Row>
         </div>
     );

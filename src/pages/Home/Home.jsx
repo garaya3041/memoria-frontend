@@ -1,4 +1,5 @@
 import React, {useContext, useEffect} from 'react'
+import header from '../../components/header/header';
 import Button from 'react-bootstrap/Button';
 import './Home.css';
 import Modal from 'react-modal';
@@ -82,6 +83,7 @@ const Home = () => {
     return (
         <>
         <div className="fluid-container">
+            {header()}
             <div className="elements-center">
                 <div className="bienvenida">
                     <h2 className="titulo">

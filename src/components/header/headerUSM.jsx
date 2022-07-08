@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 import logo from '../../img/Departamento-de-Informtica_HORIZONTAL.png'
-import './header.css';
+import './headerUSM.css';
 
-const header = () => {
+const HeaderUSM = () => {
   return (
     <div className='logo'>
         <img className='img' src={logo} alt="" />
@@ -10,4 +10,4 @@ const header = () => {
   )
 }
 
-export default header
+export default HeaderUSM

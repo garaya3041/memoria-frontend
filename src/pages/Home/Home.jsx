@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from 'react'
-import header from '../../components/header/header';
+import HeaderUSM from '../../components/header/headerUSM';
 import Button from 'react-bootstrap/Button';
 import './Home.css';
 import Modal from 'react-modal';
@@ -11,6 +11,8 @@ import {
     Link,
 } from "react-router-dom";
 import {ParametrosContext} from '../../context/ParametrosProvider';
+import NavbarUSM from '../../components/navbar/navbarUSM';
+import { Row, Col } from 'react-bootstrap';
 
 const customStyles = {
     content: {
@@ -82,64 +84,72 @@ const Home = () => {
 
     return (
         <>
+        <HeaderUSM />
+        <NavbarUSM />
         <div className="fluid-container">
-            {header()}
-            <div className="elements-center">
-                <div className="bienvenida">
-                    <h2 className="titulo">
-                        Bienvenid@
-                    </h2>
-                    <div className="content">
-                        <p>Este es un solver para modelos de programación lineal entera (PLE) de hasta 15 variables y 50 restricciones excluyendo las de naturaleza. Para monitores inferiores a 1080px de ancho se recomienda no más de 10 variables.
-                        La técnica que se usará para resolverlo es el método de Ramificación y Acotamiento (Branch & Bound) y tendrás la posibilidad de ver cómo se construye el árbol de solución e incluso de modificar sus parámetros de resolución mientras aún itera el solver.</p>
-                        <p>Para empezar, ingresa ingresa los metadatos del modelo en el siguiente enlace:</p>
+            <Row>
+                <Col md={3}></Col>
+                <Col md={6}>
+                    <div className="elements-center">
+                        <div className="bienvenida">
+                            <h2 className="titulo">
+                                Bienvenid@
+                            </h2>
+                            <div className="content">
+                                <p>Este es un solver para modelos de programación lineal entera (PLE) de hasta 15 variables y 50 restricciones excluyendo las de naturaleza. Para monitores inferiores a 1080px de ancho se recomienda no más de 10 variables.
+                                La técnica que se usará para resolverlo es el método de Ramificación y Acotamiento (Branch & Bound) y tendrás la posibilidad de ver cómo se construye el árbol de solución e incluso de modificar sus parámetros de resolución mientras aún itera el solver.</p>
+                                <p>Para empezar, ingresa los metadatos del modelo en el siguiente enlace:</p>
+                            </div>
+                        </div>
+                        <Button onClick={openModal} variant="primary">Crear Modelo</Button>{' '}
+                        <Modal
+                            isOpen={modalIsOpen}
+                            onRequestClose={closeModal}
+                            style={customStyles}
+                            contentLabel="Example Modal"
+                        >
+                            <h2>Sobre el modelo...</h2>
+                            <form onSubmit={handleSubmit}>
+                                Indique si la función objetivo es de minimización o maximización:
+                                <select
+                                    className="form-control mb-2"
+                                    name="tipo"
+                                    value={modelo.tipo}
+                                    onChange={handleChange}
+                                >
+                                    <option value={"min"}>Minimización</option>
+                                    <option value={"max"}>Maximización</option>
+                                </select>
+                                Seleccione el número de variables:
+                                <select
+                                    className="form-control mb-2"
+                                    name="variables"
+                                    value={modelo.variables}
+                                    onChange={handleChange}
+                                >
+                                    {numVar()}
+                                </select>
+                                Seleccione el número de restricciones sin considerar las de naturaleza:
+                                <select
+                                    className="form-control mb-2"
+                                    name="restricciones"
+                                    value={modelo.restricciones}
+                                    onChange={handleChange}
+                                >
+                                    {numRes()}
+                                </select>
+                            </form>
+                            <div className="rowFinal">
+                                <Link to={ { pathname: `parametros/` } }>
+                                    <Button variant="primary">Continuar</Button>{' '}
+                                </Link>
+                            </div>
+                        </Modal>
                     </div>
-                </div>
-                <Button onClick={openModal} variant="primary">Empezar</Button>{' '}
-                <Modal
-                    isOpen={modalIsOpen}
-                    onRequestClose={closeModal}
-                    style={customStyles}
-                    contentLabel="Example Modal"
-                >
-                    <h2>Sobre el modelo...</h2>
-                    <form onSubmit={handleSubmit}>
-                        Indique si la función objetivo es de minimización o maximización:
-                        <select
-                            className="form-control mb-2"
-                            name="tipo"
-                            value={modelo.tipo}
-                            onChange={handleChange}
-                        >
-                            <option value={"min"}>Minimización</option>
-                            <option value={"max"}>Maximización</option>
-                        </select>
-                        Seleccione el número de variables:
-                        <select
-                            className="form-control mb-2"
-                            name="variables"
-                            value={modelo.variables}
-                            onChange={handleChange}
-                        >
-                            {numVar()}
-                        </select>
-                        Seleccione el número de restricciones sin considerar las de naturaleza:
-                        <select
-                            className="form-control mb-2"
-                            name="restricciones"
-                            value={modelo.restricciones}
-                            onChange={handleChange}
-                        >
-                            {numRes()}
-                        </select>
-                    </form>
-                    <div className="rowFinal">
-                        <Link to={ { pathname: `parametros/` } }>
-                            <Button variant="primary">Continuar</Button>{' '}
-                        </Link>
-                    </div>
-                </Modal>
-            </div>
+                </Col>
+                <Col md={3}></Col>
+            </Row>
+            
         </div>
         </>
     )

@@ -1,20 +1,14 @@
 import React, {useContext, useEffect, useRef, useState}  from 'react';
-import header from '../../components/header/header';
+import HeaderUSM from '../../components/header/headerUSM';
+import NavbarUSM from '../../components/navbar/navbarUSM';
 import { Row, Col } from 'react-bootstrap';
-import {
-    BrowserRouter as Router,
-    Link,
-    Route,
-    Routes,
-    useParams
-} from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import {ParametrosContext} from '../../context/ParametrosProvider';
 import './Tree.css';
 import { MathJax, MathJaxContext } from "better-react-mathjax";
 import axios from 'axios';
 import { host } from '../../environment/environment';
-import { network, Network } from "vis-network";
+import { Network } from "vis-network";
 
 import {Line} from 'react-chartjs-2';
 import {
@@ -27,7 +21,6 @@ import {
     Tooltip,
     Legend,
   } from 'chart.js'
-  import { Chart } from 'react-chartjs-2'
   
   ChartJS.register(
     CategoryScale,
@@ -51,7 +44,7 @@ const createVector = (m) =>{
 
 const Tree = () => {
 
-    const { modelo, setModelo, A, setA, b, set_b, objetivo, setObjetivo, ineq, setIneq, tipo, setTipo, binarias, setBinarias } = useContext(ParametrosContext);
+    const { modelo, A, b, objetivo, ineq, tipo, binarias } = useContext(ParametrosContext);
 
     const [A_ub, setA_ub] = useState([])
     const [b_ub, set_b_ub] = useState([])
@@ -143,7 +136,7 @@ const Tree = () => {
         groups:{
             branched: { color:{background:'#3DAAD6'}, shape:'circle'},
             optimal: { color:{background:'#2FCF22'}, shape:'circle'},
-            bounded: { color:{background:'#D58934'}, shape:'box'},
+            bounded: { color:{background:'#D58934'}, shape:'circle'},
             optimalBounded: { color:{background:'#2FCF22'}, shape:'box'},
             best: { color:{background:'#2FCF22'}, shape:'star'},
             infeasible: { color:{background:'#CB6149'}, shape:'circle'},
@@ -169,18 +162,6 @@ const Tree = () => {
         messageStyle: "none"
     };
 
-    const chartRef = useRef(null)
-
-    const state = {
-        name: 'React',      
-        data: {
-            labels: [],
-            datasets: [{
-                data: []
-            }]       
-        }
-    };
-
     useEffect(()=>{
         transform();
     },[]);
@@ -200,14 +181,14 @@ const Tree = () => {
         })
         network.on('deselectNode', (properties) =>{
             setActualNode({})
-            if (properties.edges.length == 1){
+            if (properties.edges.length === 1){
                 const selectedEdgeId = properties.edges[0]
                 const selectedVisEdge = infoEdges.find((element) => element.id === selectedEdgeId )
                 setActualEdge(selectedVisEdge);
             }
         })
         network.on('selectEdge', (properties) =>{
-            if (properties.nodes.length == 0){
+            if (properties.nodes.length === 0){
                 const selectedEdgeId = properties.edges[0]
                 const selectedVisEdge = infoEdges.find((element) => element.id === selectedEdgeId )
                 setActualNode({})
@@ -227,13 +208,13 @@ const Tree = () => {
         let MA_eq = createMatrix(n,m);
         let Mb_eq = createVector(n);
         A.map( (item1,i) => {
-            if (ineq[i]==0){
+            if (ineq[i]===0){
                 item1.map((item2,j)=>{
                     MA_ub[i][j] = item2
                 })
                 Mb_ub[i] = b[i] 
             }
-            else if (ineq[i]==1){
+            else if (ineq[i]===1){
                 item1.map((item2,j)=>{
                     MA_ub[i][j] = -item2
                 })
@@ -267,7 +248,7 @@ const Tree = () => {
                 <div key={i}>
                     <MathJax className="fObj_row">
                         {
-                            i != 0 ? 
+                            i !== 0 ? 
                             item >= 0 ? `$+ ${item} \\cdot x_{${i+1}}$` : `$- ${-item} \\cdot x_{${i+1}}$`
                             : 
                             item >= 0 ? `$${item} \\cdot x_{${i+1}}$` : `$- ${-item} \\cdot x_{${i+1}}$`
@@ -293,14 +274,16 @@ const Tree = () => {
             let rowItem = item1.map((item2,j)=>{
                 return (
                     <div key={j}>
-                        <MathJax className="fObj_row">
-                            {
-                                j != 0 ? 
-                                item2 >= 0 ? `$+ ${item2} \\cdot x_{${j+1}}$` : `$- ${-item2} \\cdot x_{${j+1}}$`
-                                : 
-                                item2 >= 0 ? `$${item2} \\cdot x_{${j+1}}$` : `$- ${-item2} \\cdot x_{${j+1}}$`
-                            }
-                        </MathJax>
+                        {
+                            item2 !==0
+                            ?
+                            <MathJax className="fObj_row">
+                                { item2 >= 0 ? `$+ ${item2} \\cdot x_{${j+1}}$` : `$- ${-item2} \\cdot x_{${j+1}}$` }
+                            </MathJax>
+                            :
+                            <div></div>
+                        }
+                        
                     </div>
                 )
             })
@@ -311,11 +294,11 @@ const Tree = () => {
                     </div>
                     <MathJax className="fObj_row">
                         {
-                            ineq[i] == 0 ? 
+                            ineq[i] === 0 ? 
                             `$$\\leq $$`
                             : 
                             (
-                                ineq[i] == 1 
+                                ineq[i] === 1 
                                 ?
                                 `$$\\geq $$`
                                 :
@@ -398,7 +381,7 @@ const Tree = () => {
         setIterationType(input.target.value);
         setTimer(1);
         setSteps(1);
-        if(input.target.value!='steps' && nodeType=='selectedNode') {
+        if(input.target.value!=='steps' && nodeType==='selectedNode') {
             setNodeType('random')
             setSelectedNode(null)
         }
@@ -440,7 +423,7 @@ const Tree = () => {
                 setStepsValid(false)
             }
         }
-        if(value!=1 && nodeType=='selectedNode') {
+        if(value!==1 && nodeType==='selectedNode') {
             setNodeType('random')
             setSelectedNode(null)
         }
@@ -459,7 +442,7 @@ const Tree = () => {
         setActualEdge({})
         setActualNode({})
         let newC = C.slice();
-        if (tipo == 'max'){
+        if (tipo === 'max'){
             newC = newC.map(item=>-1*item)
         }
         let body = {}
@@ -477,7 +460,7 @@ const Tree = () => {
         body["iterator"]["type"] = iterationType;
         body["iterator"]["iteration-steps"] = steps;
         body["iterator"]["time-limit"] = timer/1000;
-        if(nodeType == "selectedNode"){
+        if(nodeType === "selectedNode"){
             setSelectedNode(null)
             setNodeType("random")
         }
@@ -486,8 +469,8 @@ const Tree = () => {
                 setTree(response.data);
                 const arrayNodes = response.data.visNodes.map(item=>{
                     let obj = {...item};
-                    if(item.group != 'best'){
-                        if(tipo=='max') obj["label"] = `ID: ${item.id}`
+                    if(item.group !== 'best'){
+                        if(tipo==='max') obj["label"] = `ID: ${item.id}`
                         else obj["label"] = `ID: ${item.id}`
                     }
                     return obj
@@ -497,8 +480,8 @@ const Tree = () => {
                         "id":item.id,
                         "group":item.group,
                     };
-                    if(item.group != 'best'){
-                        if(tipo=='max') obj["label"] = `ID: ${item.id}`
+                    if(item.group !== 'best'){
+                        if(tipo==='max') obj["label"] = `ID: ${item.id}`
                         else obj["label"] = `ID: ${item.id}`
                     }
                     return obj
@@ -518,7 +501,7 @@ const Tree = () => {
                 const labels = response.data.graph.map(item=>item.iteration);
                 const dataset = response.data.graph.map(item=>{
                     let z = Number(Number(item.z).toFixed(1))
-                    if(tipo=='max') z = Number(-Number(item.z).toFixed(1))
+                    if(tipo==='max') z = Number(-Number(item.z).toFixed(1))
                     return {
                         x: item.iteration,
                         y: z
@@ -526,7 +509,7 @@ const Tree = () => {
                 })
                 const dataset2 = response.data.graph2.map(item=>{
                     let z = Number(Number(item.z).toFixed(1))
-                    if(tipo=='max') z = Number(-Number(item.z).toFixed(1))
+                    if(tipo==='max') z = Number(-Number(item.z).toFixed(1))
                     return {
                         x: item.iteration,
                         y: z
@@ -575,9 +558,9 @@ const Tree = () => {
         body["iterator"]["type"] = iterationType;
         body["iterator"]["iteration-steps"] = steps;
         body["iterator"]["time-limit"] = timer/1000;
-        if(iterationType=="steps" && steps == 1) body["iterator"]["selection"] = { selected: true, id: selectedNode};
+        if(iterationType==="steps" && steps === 1) body["iterator"]["selection"] = { selected: true, id: selectedNode};
         else body["iterator"]["selection"] = { selected: false, id: 0};
-        if(nodeType == "selectedNode"){
+        if(nodeType === "selectedNode"){
             setSelectedNode(null)
             setNodeType("random")
         }
@@ -588,8 +571,8 @@ const Tree = () => {
                 setTree(arbol);
                 const arrayNodes = response.data.visNodes.map(item=>{
                     let obj = {...item};
-                    if(item.group != 'best'){
-                        if(tipo=='max') obj["label"] = `ID: ${item.id}`
+                    if(item.group !== 'best'){
+                        if(tipo==='max') obj["label"] = `ID: ${item.id}`
                         else obj["label"] = `ID: ${item.id}`
                     }
                     return obj
@@ -599,8 +582,8 @@ const Tree = () => {
                         "id":item.id,
                         "group":item.group,
                     };
-                    if(item.group != 'best'){
-                        if(tipo=='max') obj["label"] = `ID: ${item.id}`
+                    if(item.group !== 'best'){
+                        if(tipo==='max') obj["label"] = `ID: ${item.id}`
                         else obj["label"] = `ID: ${item.id}`
                     }
                     return obj
@@ -620,7 +603,7 @@ const Tree = () => {
                 const labels = response.data.graph.map(item=>item.iteration);
                 const dataset = response.data.graph.map(item=>{
                     let z = Number(Number(item.z).toFixed(1))
-                    if(tipo=='max') z = Number(-Number(item.z).toFixed(1))
+                    if(tipo==='max') z = Number(-Number(item.z).toFixed(1))
                     return {
                         x: item.iteration,
                         y: z
@@ -628,7 +611,7 @@ const Tree = () => {
                 })
                 const dataset2 = response.data.graph2.map(item=>{
                     let z = Number(Number(item.z).toFixed(1))
-                    if(tipo=='max') z = Number(-Number(item.z).toFixed(1))
+                    if(tipo==='max') z = Number(-Number(item.z).toFixed(1))
                     return {
                         x: item.iteration,
                         y: z
@@ -666,11 +649,6 @@ const Tree = () => {
         }
     }
 
-    const showTree = () =>{
-        let body = tree;
-        console.log(body);
-    }
-
     const change_ansType = (input) => {
         setAnsType(input.target.value)
     }
@@ -682,9 +660,9 @@ const Tree = () => {
         let z_opt
         if(best_X.length > 0){
             z_opt = Number(tree.bestZ).toFixed(0)
-            if(tipo == 'max') z_opt = Number(-tree.bestZ).toFixed(0)
+            if(tipo === 'max') z_opt = Number(-tree.bestZ).toFixed(0)
             for(let i = 0; i< best_X.length;i++){
-                if(i!=best_X.length-1){
+                if(i!==best_X.length-1){
                     variable = String.raw`x_{${i+1}}\\`
                     answer = String.raw`${best_X[i]}\\`
                 }
@@ -827,11 +805,11 @@ const Tree = () => {
             let answers = ''
             let variable, answer, tipoNodo
             let value
-            if(actualNode.x && actualNode.group != 'infeasible' && actualNode.x.length > 0){
+            if(actualNode.x && actualNode.group !== 'infeasible' && actualNode.x.length > 0){
                 value = Number(actualNode.z).toFixed(1)
-                if(tipo == 'max') value = Number(-actualNode.z).toFixed(6)
+                if(tipo === 'max') value = Number(-actualNode.z).toFixed(6)
                 for(let i = 0; i< actualNode.x.length;i++){
-                    if(i!=actualNode.x.length-1){
+                    if(i!==actualNode.x.length-1){
                         variable = String.raw`x_{${i+1}}\\`
                         answer = String.raw`${Number(actualNode.x[i]).toFixed(6)}\\`
                     }
@@ -877,7 +855,7 @@ const Tree = () => {
                     </div>
                 )
             }
-            else if (actualNode && actualNode.group == 'infeasible'){
+            else if (actualNode && actualNode.group === 'infeasible'){
                 return(
                     <div className='actualNode-container'>
                         <div>Nodo: Podado por infeasibilidad.</div>
@@ -890,7 +868,7 @@ const Tree = () => {
     const showEdge = () => {
         if(Object.keys(actualEdge).length !== 0){
             let direction
-            if(actualEdge.direction == 'left')
+            if(actualEdge.direction === 'left')
                 direction = 'leq'
             else direction = 'geq'
             return(
@@ -899,7 +877,7 @@ const Tree = () => {
                         {`$$ x_{${actualEdge.varIdx+1}} \\${direction} ${actualEdge.newValue} $$`}
                     </MathJax>
                     {
-                        actualEdge.direction == 'left'
+                        actualEdge.direction === 'left'
                         ?
                         'Rama izquierda.'
                         :
@@ -915,7 +893,7 @@ const Tree = () => {
     }
 
     const selectionNode = () =>{
-        if(iterationType=="steps" && steps==1 && tree && 'activeNodesIds' in tree && tree.activeNodesIds.length>0 && nodeType=='selectedNode'){
+        if(iterationType==="steps" && steps===1 && tree && 'activeNodesIds' in tree && tree.activeNodesIds.length>0 && nodeType==='selectedNode'){
             let activeNodes = tree.activeNodesIds.map((item)=>{
                 return(item.id)
             }).sort(function(a, b){return a - b})
@@ -935,33 +913,15 @@ const Tree = () => {
         }
     }
 
-    const refreshPage = () => {
-        setTimeout(()=>{
-            window.location.reload(false);
-        },150)
-    }
-
-    const openZoom = () => {
-        setZoom(!zoom);
-    }
-
     return (
         <div className='container-fluid'>
-            {header()}
-            <Row>
-                    <Col md={1} >
-                        <Link to={ { pathname: `/` } }>
-                                <Button className='btn-home' variant="primary" onClick={refreshPage}>Inicio</Button>{' '}
-                        </Link>
-                    </Col>
-                    <Col md={11} >
-                    </Col>
-                </Row>
+            <HeaderUSM />
+            <NavbarUSM />
             <div className='center-elems'>
                 {
                     zoom 
                     ?
-                    <div>
+                    <div className='center-elems'>
                         <Button className='primary btnContinuar btn-modelo' onClick={()=>{setZoom(!zoom)}}>
                             Ocultar Modelo
                         </Button>
@@ -998,7 +958,7 @@ const Tree = () => {
                         <option value={'steps'}>{'Por pasos'}</option>
                     </select>
                     {
-                        iterationType == 'timer' 
+                        iterationType === 'timer' 
                         ?
                         <div className="form-view1">
                             <form onSubmit={handleSubmit}>
@@ -1014,7 +974,7 @@ const Tree = () => {
                         </div>
                         :
                         (
-                            iterationType == 'steps'
+                            iterationType === 'steps'
                             ?
                             <div className="form-view2">
                                 <form onSubmit={handleSubmit}>
@@ -1035,7 +995,7 @@ const Tree = () => {
                 </div>
                 <div className="iterationNode">
                     <div>
-                        Selección de nodo activo:
+                        Búsqueda de nodo activo:
                     </div>
                     <select 
                         className='iterNode'
@@ -1049,7 +1009,7 @@ const Tree = () => {
                         <option value={'bestBounded'}>{'Nodo con mejor cota'}</option>
                         <option value={'worstBounded'}>{'Nodo con peor cota'}</option>
                         {
-                            iterationType=='steps' && steps == 1 && 'activeNodesIds' in tree && tree.activeNodesIds.length>0
+                            iterationType==='steps' && steps === 1 && 'activeNodesIds' in tree && tree.activeNodesIds.length>0
                             ?
                             <option value={'selectedNode'}>{'Por selección'}</option>
                             :

@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App.jsx';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from './pages/Home/Home';
@@ -9,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Parameters from './pages/Parameters/Parameters';
 import ParametrosProvider from './context/ParametrosProvider';
 import Tree from './pages/Tree/Tree';
+import Tutorial from './pages/Tutorial/Tutorial';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -44,6 +44,7 @@ ReactDOM.render(
             <Route path="/" element={<Home />} />
             <Route path="/parametros/" element={<Parameters />} />
             <Route path="/arbol/" element={<Tree />} />
+            <Route path="/tutorial/" element={<Tutorial />} />
           </Routes>
         </ErrorBoundary>
       </ParametrosProvider>

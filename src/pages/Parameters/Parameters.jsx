@@ -190,7 +190,7 @@ const Parameters = (props) => {
                 {inputs_A()}
                 <h4 className='titulo'>Seleccionar variables binarias:</h4>
                 {inputBinarias()}
-                <Link to={ { pathname: `/arbol/` } }>
+                <Link to={ { pathname: `/arbol` } }>
                     <Button className='primary btnContinuar'>
                         Continuar
                     </Button>

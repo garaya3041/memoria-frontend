@@ -140,7 +140,7 @@ const Home = () => {
                                 </select>
                             </form>
                             <div className="rowFinal">
-                                <Link to={ { pathname: `parametros/` } }>
+                                <Link to={ { pathname: `/parametros` } }>
                                     <Button variant="primary">Continuar</Button>{' '}
                                 </Link>
                             </div>

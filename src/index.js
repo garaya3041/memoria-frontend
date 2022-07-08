@@ -42,9 +42,9 @@ ReactDOM.render(
       <ErrorBoundary>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/parametros/" element={<Parameters />} />
-            <Route path="/arbol/" element={<Tree />} />
-            <Route path="/tutorial/" element={<Tutorial />} />
+            <Route path="/parametros" element={<Parameters />} />
+            <Route path="/arbol" element={<Tree />} />
+            <Route path="/tutorial" element={<Tutorial />} />
           </Routes>
         </ErrorBoundary>
       </ParametrosProvider>

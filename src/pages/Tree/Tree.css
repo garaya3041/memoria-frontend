@@ -215,3 +215,8 @@
     padding-left: 0px;
     padding-right: 0px;
 }
+
+.spinner{
+    width: 24px;
+    height: 24px;
+}

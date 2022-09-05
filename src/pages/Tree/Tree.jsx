@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useRef, useState}  from 'react';
 import HeaderUSM from '../../components/header/headerUSM';
 import NavbarUSM from '../../components/navbar/navbarUSM';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Spinner } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import {ParametrosContext} from '../../context/ParametrosProvider';
 import './Tree.css';
@@ -51,6 +51,8 @@ const Tree = () => {
     const [A_eq, setA_eq] = useState([])
     const [b_eq, set_b_eq] = useState([])
     const [C, setC] = useState([])
+
+    const [isLoading, setIsLoading] = useState(false)
 
     const [changeButtons, setChangeButtons] = useState(false)
     const [zoom, setZoom] = React.useState(false);
@@ -438,6 +440,7 @@ const Tree = () => {
     }
 
     const getTree1stTime = async () => {
+        setIsLoading(true)
         setBest_X([])
         setActualEdge({})
         setActualNode({})
@@ -541,13 +544,16 @@ const Tree = () => {
                 if(response.data.bestX && response.data.bestX.length>0){
                     setBest_X(response.data.bestX)
                 }
+                setIsLoading(false)
             })
         }catch(error){
             console.log(error);
+            setIsLoading(false)
         }
     }
 
     const getTree = async () => {
+        setIsLoading(true)
         setActualEdge({})
         setActualNode({})
         let body = tree
@@ -642,10 +648,12 @@ const Tree = () => {
                 setData(newData)
                 if(response.data.bestX && response.data.bestX.length>0){
                     setBest_X(response.data.bestX)
-                }
+                };
+                setIsLoading(false);
             })
         }catch(error){
             console.log(error.response);
+            setIsLoading(false);
         }
     }
 
@@ -1053,17 +1061,27 @@ const Tree = () => {
                     :
                     <div>
                         {
-                            tree && tree.activeNodesIds && tree.activeNodesIds.length>0
+                            isLoading
                             ?
-                            <Button className='primary btnContinuar btn-tree' onClick={getTree}>
-                                Resolver
+                            <Button className='primary btnContinuar btn-tree'>
+                                <Spinner className='spinner' animation="border" variant="light" />
                             </Button>
                             :
-                            <div></div>
+                            <div>
+                                {
+                                    tree && tree.activeNodesIds && tree.activeNodesIds.length>0
+                                    ?
+                                    <Button className='primary btnContinuar btn-tree' onClick={getTree}>
+                                        Resolver
+                                    </Button>
+                                    :
+                                    <div></div>
+                                }
+                                <Button className='primary btnContinuar btn-tree' onClick={getTree1stTime}>
+                                    Reset
+                                </Button>
+                            </div>
                         }
-                        <Button className='primary btnContinuar btn-tree' onClick={getTree1stTime}>
-                            Reset
-                        </Button>
                     </div>
                 }
             </div>
@@ -1104,26 +1122,32 @@ const Tree = () => {
                 </Col>
                 <Col md={1}></Col>
             </Row>
-            <Row>
-                <Col md={1}></Col>
-                <Col md={6}>
-                    <Line
-                        className='grafico'
-                        data={data}
-                        options={data.options}
-                    />
-                </Col>
-                <Col md={4}>
-                    <MathJaxContext 
-                        version={2}
-                        config={config}
-                        onStartup={(mathJax) => (mathJax.Hub.processSectionDelay = 0)}
-                    >
-                        { best_X.length>0 ? getX() : ''}
-                    </MathJaxContext>
-                </Col>
-                <Col md={1}></Col>
-            </Row>
+                {
+                    best_X.length>0
+                    ?
+                    <Row>
+                        <Col md={1}></Col>
+                        <Col md={6}>
+                            <Line
+                                className='grafico'
+                                data={data}
+                                options={data.options}
+                            />
+                        </Col>
+                        <Col md={4}>
+                            <MathJaxContext 
+                                version={2}
+                                config={config}
+                                onStartup={(mathJax) => (mathJax.Hub.processSectionDelay = 0)}
+                            >
+                                { best_X.length>0 ? getX() : ''}
+                            </MathJaxContext>
+                        </Col>
+                        <Col md={1}></Col>
+                    </Row>
+                    :
+                    <div></div>
+                }
         </div>
     );
 };

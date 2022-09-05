@@ -86,11 +86,11 @@ const Home = () => {
         <>
         <HeaderUSM />
         <NavbarUSM />
-        <div className="fluid-container">
+        <div className="fluid-containers">
             <Row>
                 <Col md={3}></Col>
                 <Col md={6}>
-                    <div className="elements-center">
+                    <div className="elements-centers">
                         <div className="bienvenida">
                             <h2 className="titulo">
                                 Bienvenid@

@@ -23,7 +23,6 @@ const NavbarUSM = () => {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
-                    <Nav.Link href="/tutorial">Tutorial</Nav.Link>
                     <Nav.Link href="/tutorial">Definiciones</Nav.Link>
                     <NavDropdown title="Ejemplos" id="collasible-nav-dropdown">
                         {
